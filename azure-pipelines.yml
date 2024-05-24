@@ -15,12 +15,7 @@ steps:
 
 - bash: |
     source activate mtg-artist-data
-    python -m mtg_data_code/upload_data_to_blob.py
-  displayName: pytest
+    python -m mtg_data_code/upload_data_to_blob
+  displayName: Upload Data
   env:
     BLOB_CONNECTION_STRING: $(BLOB_CONNECTION_STRING)
-
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
