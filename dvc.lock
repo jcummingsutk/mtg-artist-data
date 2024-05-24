@@ -1,0 +1,68 @@
+schema: '2.0'
+stages:
+  get_images:
+    cmd: python mtg_data_code/download_card_images.py
+    deps:
+    - path: mtg_data_code/download_card_images.py
+      hash: md5
+      md5: 244883dd7b4164394d38aff5bf14d52c
+      size: 4119
+    params:
+      dvc_params.yaml:
+        artists:
+        - Noah Bradley
+        - Mark Poole
+        - Terese Nielsen
+        - Rebecca Guay
+        - John Avon
+        - Christopher Rush
+    outs:
+    - path: data/card_images/
+      hash: md5
+      md5: a00437483da2533e0e348145d9097420.dir
+      size: 84810853
+      nfiles: 912
+  train_test_split:
+    cmd: python mtg_data_code/train_test_split.py
+    deps:
+    - path: data/card_images/
+      hash: md5
+      md5: a00437483da2533e0e348145d9097420.dir
+      size: 84810853
+      nfiles: 912
+    - path: mtg_data_code/train_test_split.py
+      hash: md5
+      md5: 2046b0a3f5d79b1577edbd07a76379f8
+      size: 7206
+    params:
+      dvc_params.yaml:
+        test_fraction: 0.1
+        train_fraction: 0.7
+        val_fraction: 0.2
+    outs:
+    - path: data/model_training_and_eval
+      hash: md5
+      md5: 03ff09239a9a7e57a31b448838b0aa64.dir
+      size: 84801596
+      nfiles: 912
+  create_model_config:
+    cmd: python mtg_data_code/output_params.py
+    deps:
+    - path: mtg_data_code/output_params.py
+      hash: md5
+      md5: 4762df129017fc4ba6e0b4e5a8242f6c
+      size: 900
+    params:
+      dvc_params.yaml:
+        artists:
+        - Noah Bradley
+        - Mark Poole
+        - Terese Nielsen
+        - Rebecca Guay
+        - John Avon
+        - Christopher Rush
+    outs:
+    - path: data/output_params.yaml
+      hash: md5
+      md5: c31b7ce56b3c3d4f916e70cb4cc9f525
+      size: 15

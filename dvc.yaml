@@ -1,0 +1,31 @@
+stages:
+  get_images:
+    cmd: python mtg_data_code/download_card_images.py
+    deps:
+      - mtg_data_code/download_card_images.py
+    params:
+      - dvc_params.yaml:
+        - artists
+    outs: 
+      - data/card_images/
+  train_test_split:
+    cmd: python mtg_data_code/train_test_split.py
+    deps:
+      - mtg_data_code/train_test_split.py
+      - data/card_images/
+    params:
+      - dvc_params.yaml:
+        - train_fraction
+        - val_fraction
+        - test_fraction
+    outs:
+      - data/model_training_and_eval
+  create_model_config:
+    cmd: python mtg_data_code/output_params.py
+    deps:
+      - mtg_data_code/output_params.py
+    params:
+      - dvc_params.yaml:
+        - artists
+    outs:
+      - data/output_params.yaml
