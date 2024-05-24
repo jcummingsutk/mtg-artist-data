@@ -13,8 +13,12 @@ steps:
 - script: conda env create --quiet --file conda.yaml
   displayName: Create Anaconda environment
 
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+- bash: |
+    source activate mtg-artist-data
+    python -m mtg_data_code/upload_data_to_blob.py
+  displayName: pytest
+  env:
+    BLOB_CONNECTION_STRING: $(BLOB_CONNECTION_STRING)
 
 - script: |
     echo Add other tasks to build, test, and deploy your project.
