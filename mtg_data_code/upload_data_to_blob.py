@@ -6,7 +6,10 @@ from azure.storage.blob import BlobClient, BlobServiceClient
 from mtg_data_code.config import load_env_vars
 
 load_env_vars("config.yaml", "config_secret.yaml")
-blobs = list(glob.glob(os.path.join("data", "output_params.yaml")))
+blobs = list(
+    glob.glob(os.path.join("data", "model_training_and_eval", "*", "*", "*.jpg"))
+)
+blobs.append(os.path.join("data", "output_params.yaml"))
 
 blob_service_client = BlobServiceClient.from_connection_string(
     os.environ["BLOB_CONNECTION_STRING"]
